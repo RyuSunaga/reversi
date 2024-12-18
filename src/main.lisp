@@ -40,7 +40,7 @@
     (format t "~%")))
 
 ;; Player Class
-;; Player情報/Action
+;; Player/PlayeAction
 (defclass player ()
   ((player-type :initarg :player-type
 		:initform (error "Must set player type.")
