@@ -22,6 +22,10 @@
 (defconstant +cpu-thinking+ "CPU is thinking...")
 (defconstant +put-error+ "You can't put the point")
 
+(defvar *zenkaku-numbers* '("０" "１" "２" "３" "４" "５" "６" "７" "８"))
+
+
+
 
 ;; Board Class
 ;; Board情報/書き換え/出力/チェック
@@ -44,8 +48,13 @@
   (:documentation "Display board info."))
 
 (defmethod display-grid ((board board))
-  ;; TODO：ボードを表示する際に行番号と列番号を表示できるようにしたい
+  
+  (format t "~a" " ")
+  (dotimes (i 8) (format t "~a" (elt *zenkaku-numbers* i)))
+  (format t "~%")
+	  
   (dotimes (i 8)
+    (format t "~a" (elt *zenkaku-numbers* i))
     (dotimes (j 8)
       (format t "~a" (aref (grid board) i j)))
     (format t "~%")))
