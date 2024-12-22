@@ -15,21 +15,6 @@
 (defconstant +column-min-inclusive+ 0)
 (defconstant +column-max-inclusive+ 7) 
 
-
-;; ;; message values
-;; (defconstant +start+ "GAME START")
-;; (defconstant +end+  "GAME FINISHED")
-
-;; (defconstant +human-turn+ "YOUR TURN")
-;; (defconstant +cpu-turn+ "CPU TURN")
-
-;; (defconstant +human-win+ "YOUR WIN!!!")
-;; (defconstant +human-lose+cd "YOUR LOSE...")
-
-;; ;; put time
-;; (defconstant +cpu-thinking+ "CPU is thinking...")
-;; (defconstant +put-error+ "You can't put the point")
-
 (defvar *zenkaku-numbers* '("０" "１" "２" "３" "４" "５" "６" "７" "８"))
 
 
@@ -206,3 +191,10 @@ p
 ;; ５．．．．．．．．
 ;; ６．．．．．．．．
 ;; ７．．．．．．．．
+
+;; TODO
+;; 1.関数のテストを追加したい
+;; 2.ログを吐き出せるようにしたい
+;; 3.エラーをハンドリングできるようにしたい
+;; 4.GUIで処理できるようにしたい
+;; 5.重複をなるべく削除したい
