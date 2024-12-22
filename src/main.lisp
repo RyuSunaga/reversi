@@ -1,29 +1,36 @@
-;; 目的：以下の３つに慣れる
-;;; 1. lisp
-;;; 2. CLOS
-;;; 3. マクロ
+;;;; My Lisp training program.
+;;;; Author: Ryu
+;;;; Description: Simple reversi program.
 
-;; board values
+
+;;;; ---- Constant Values ----
+
 (defconstant +black+ #\○ "Symbol for black stone.")
 (defconstant +white+ #\● "Symbol for white stone.")
 (defconstant +space+ #\． "Symbol for white stone.")
 
-;; message values
-(defconstant +sart+ "GAME START")
-(defconstant +end+  "GAME FINISHED")
+(defconstant +row-min-inclusive+ 0)
+(defconstant +row-max-inclusive+ 7) 
 
-(defconstant +human-turn+ "YOUR TURN")
-(defconstant +cpu-turn+ "CPU TURN")
+(defconstant +column-min-inclusive+ 0)
+(defconstant +column-max-inclusive+ 7) 
 
-(defconstant +human-win+ "YOUR WIN!!!")
-(defconstant +human-lose+ "YOUR LOSE...")
 
-;; put time
-(defconstant +cpu-thinking+ "CPU is thinking...")
-(defconstant +put-error+ "You can't put the point")
+;; ;; message values
+;; (defconstant +start+ "GAME START")
+;; (defconstant +end+  "GAME FINISHED")
+
+;; (defconstant +human-turn+ "YOUR TURN")
+;; (defconstant +cpu-turn+ "CPU TURN")
+
+;; (defconstant +human-win+ "YOUR WIN!!!")
+;; (defconstant +human-lose+cd "YOUR LOSE...")
+
+;; ;; put time
+;; (defconstant +cpu-thinking+ "CPU is thinking...")
+;; (defconstant +put-error+ "You can't put the point")
 
 (defvar *zenkaku-numbers* '("０" "１" "２" "３" "４" "５" "６" "７" "８"))
-
 
 
 
@@ -44,8 +51,19 @@
     (setf (aref grid 4 3) +white+)
     grid))
 
+(defun get-other-stone (stone)
+  (cond
+    ((char= stone +white+) +black+)
+    ((char= stone +black+) +white+)
+    (t nil)))
+
 (defgeneric display-grid (board)
   (:documentation "Display board info."))
+(defgeneric put-stone (r c stone board)
+  (:documentation "Updage grid stone."))
+(defgeneric can-put-stone (r c stone board)
+  (:documentation "Check the point can put sotne"))
+
 
 (defmethod display-grid ((board board))
   
@@ -59,12 +77,46 @@
       (format t "~a" (aref (grid board) i j)))
     (format t "~%")))
 
-(defgeneric put-stone (r c stone board)
-  (:documentation "Updage grid stone."))
-
 (defmethod put-stone (r c stone (board board))
   ;; Put stone grid (r c)
   (setf (aref (grid board) r c) stone))
+
+
+
+(defmethod can-put-stone (r c stone (board board))
+  ;; 石がおける条件は２つ
+  ;; 1. 空いているスペースがある
+  ;; 2. 相手の石を挟むことができる
+
+  ;; 1. 対象の箇所が空いていなければその時点でnil
+  (if (char/= (aref (grid board) r c) +space+)
+      (return-from can-put-stone nil))
+
+  ;; 2. 相手の石を挟むことができる
+  ;; TODO: 全方向チェックをいれる一旦右方向のみ
+  (let ((comb nil) (nstone stone) (sr r) (sc c) (dr 0) (dc 1)) ;; s: start, d: direction
+    (loop
+      while
+      (and ;; next stone position include in grid.
+       (<= +row-min-inclusive+ (+ sr dr))
+       (<= (+ sr dr) +row-max-inclusive+)
+       (<= +column-min-inclusive+ (+ sc dc))
+       (<= (+ sc dc) +column-max-inclusive+))
+      do
+	 (setf sr (+ sr dr));; update row
+	 (setf sc (+ sc dc));; update column
+	 (setf nstone (aref (grid board) sr sc));; TODO: get-stone
+	 (if (char= nstone stone);; 同じ石か
+	     (if comb;;1度でも連なったか
+		 (return-from can-put-stone t) 
+		 (return-from can-put-stone nil))
+	     (if (char= nstone +space+);; スペース or 違う石
+		 (return-from can-put-stone nil)
+		 (setf comb t)))))
+    (return-from can-put-stone nil);;例えば端の場合はloopに入らない
+  )
+
+
 
 ;; TODO: put-stoneをしてすぐに結果を見るようにできないか？
 
@@ -96,14 +148,14 @@
 (defmethod decide-put-point ((p human))
   ;; If human put a stone. The point is read by repl.
 
-  (let ((r nil) (c nil) (stone (stone-type p)))
+  (let ((r nil) (c nil) (stone-type (stone-type p)))
     ;; READ INPUT    
     (format t "Please input row number...~% row:")
     (setf r (read))
     (format t "Please input row number...~% column:")
     (setf c (read))
-    (format t "Row: ~a Column: ~a Stone: ~a~%" r c stone)
-    (list r c stone)))
+    (format t "Row: ~a Column: ~a Stone: ~a~%" r c stone-type)
+    `(:row ,r :column ,c :stone-type ,stone-type)))
 
 
 ;; board
@@ -116,13 +168,7 @@
 
 (defparameter *cpu*
   (make-instance 'human :player-type 'cpu :player-name "MOCCA" :stone-type +white+))
-
-;; main
-;;; game-start
-;;;; print
-;;;; put
-;;;; update -> end if game close
-;;;; player change
+p
 
 (defun main ()
 
@@ -134,8 +180,7 @@
   (setq *player* (make-instance 'human :player-type 'human :player-name "Ryu" :stone-type +black+))
   (setq *cpu* (make-instance 'human :player-type 'cpu :player-name "MOCCA" :stone-type +white+))
 
-  
-  ;; display info: Player-StoneType, CPU-StoneType, Which starts the game.
+    ;; display info: Player-StoneType, CPU-StoneType, Which starts the game.
   
   ;; loop
   ;; TODO: (loop (is-continue *board*))
