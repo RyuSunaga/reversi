@@ -89,34 +89,41 @@
   ;; 2. 相手の石を挟むことができる
 
   ;; 1. 対象の箇所が空いていなければその時点でnil
-  (if (char/= (aref (grid board) r c) +space+)
+  (when (char/= (aref (grid board) r c) +space+)
       (return-from can-put-stone nil))
 
   ;; 2. 相手の石を挟むことができる
-  ;; TODO: 全方向チェックをいれる一旦右方向のみ
-  (let ((comb nil) (nstone stone) (sr r) (sc c) (dr 0) (dc 1)) ;; s: start, d: direction
-    (loop
-      while
-      (and ;; next stone position include in grid.
-       (<= +row-min-inclusive+ (+ sr dr))
-       (<= (+ sr dr) +row-max-inclusive+)
-       (<= +column-min-inclusive+ (+ sc dc))
-       (<= (+ sc dc) +column-max-inclusive+))
-      do
-	 (setf sr (+ sr dr));; update row
-	 (setf sc (+ sc dc));; update column
-	 (setf nstone (aref (grid board) sr sc));; TODO: get-stone
-	 (if (char= nstone stone);; 同じ石か
-	     (if comb;;1度でも連なったか
-		 (return-from can-put-stone t) 
-		 (return-from can-put-stone nil))
-	     (if (char= nstone +space+);; スペース or 違う石
-		 (return-from can-put-stone nil)
-		 (setf comb t)))))
-    (return-from can-put-stone nil);;例えば端の場合はloopに入らない
-  )
-
-
+  (flet
+      ((check-specific-direction (dr dc)
+	 (let ((comb nil) (nstone stone) (sr r) (sc c)) ;; s: start, d: direction
+	   (loop
+	     while
+	     (and ;; next stone position include in grid.
+	      (<= +row-min-inclusive+ (+ sr dr))
+	      (<= (+ sr dr) +row-max-inclusive+)
+	      (<= +column-min-inclusive+ (+ sc dc))
+	      (<= (+ sc dc) +column-max-inclusive+))
+	     do
+		(setf sr (+ sr dr));; update row
+		(setf sc (+ sc dc));; update column
+		(setf nstone (aref (grid board) sr sc));; TODO: get-stone
+		(if (char= nstone stone);; 同じ石か
+		    (if comb;;1度でも連なったか
+			(return-from check-specific-direction t) 
+			(return-from check-specific-direction nil))
+		    (if (char= nstone +space+);; スペース or 違う石
+			(return-from check-specific-direction nil)
+			(setf comb t)))))
+	 (return-from check-specific-direction nil)))
+  
+    (loop for i from -1 to 1
+	  do
+	     (loop for j from -1 to 1
+		   do
+		      (when (check-specific-direction i j)
+			(return-from can-put-stone t))))
+    (return-from can-put-stone nil)))
+				  
 
 ;; TODO: put-stoneをしてすぐに結果を見るようにできないか？
 
@@ -189,3 +196,13 @@ p
   
   )
 
+;;;; TestCase
+;;  ０１２３４５６７
+;; ０．．．．．．．．
+;; １．．．．．．．．
+;; ２．．．．．．．．
+;; ３．．．○●．．．
+;; ４．．．●○．．．
+;; ５．．．．．．．．
+;; ６．．．．．．．．
+;; ７．．．．．．．．
