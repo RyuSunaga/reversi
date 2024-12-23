@@ -1,9 +1,10 @@
 (defpackage :board
   (:use :cl :constants)
-  (:export :boardh))
+  (:export :board))
 
 (in-package :board)
 
+;;;; ---- Constant ----
 
 (defconstant +row-min-inclusive+ 0)
 (defconstant +row-max-inclusive+ 7) 
@@ -12,15 +13,7 @@
 
 (defvar *zenkaku-numbers* '("０" "１" "２" "３" "４" "５" "６" "７" "８"))
 
-
-;; Board Class
-;; Board情報/書き換え/出力/チェック
-(defclass board ()
-  ((grid :initarg :grid
-   	 :initform (initialize-grid)
-	 :accessor grid
-	 :documentation "Grid Infomation")))
-
+;;; utilitis
 (defun initialize-grid ()
   ;; initialize grid status.
   (let ((grid (make-array '(8 8) :initial-element +space+)))
@@ -30,24 +23,39 @@
     (setf (aref grid 4 3) +white+)
     grid))
 
+
+;;;; ---- Class Definition ----
+(defclass board ()
+  ((grid :initarg :grid
+   	 :initform (initialize-grid)
+	 :accessor grid
+	 :documentation "Grid Infomation")))
+
+;;;; ---- Functions ----
+
+
 (defun get-other-stone (stone)
   (cond
     ((char= stone +white+) +black+)
     ((char= stone +black+) +white+)
     (t nil)))
 
+;;;; ---- Generics ----
 (defgeneric display-grid (board)
   (:documentation "Display board info."))
+
 (defgeneric put-stone (r c stone board)
   (:documentation "Updage grid stone."))
+
 (defgeneric can-put-stone (r c stone board)
   (:documentation "Check the point can put sotne."))
+
 (defgeneric reverse-stones (r c stone board)
   (:documentation "Reverse stones."))
 
+;;;; ---- Methods ----
 
 (defmethod display-grid ((board board))
-  
   (format t "~a" " ")
   (dotimes (i 8) (format t "~a" (elt *zenkaku-numbers* i)))
   (format t "~%")
@@ -116,6 +124,3 @@
   ;; NOTE: check-specific-directionを使いまわしたい
 )
 
-;; board
-(defparameter *board*
-  (make-instance 'board))
