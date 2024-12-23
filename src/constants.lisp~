@@ -1,0 +1,9 @@
+(defpackage :constants
+  (:use :cl))
+
+(in-package :constants)
+
+
+(defconstant +black+ #\○ "Symbol for black stone.")
+(defconstant +white+ #\● "Symbol for white stone.")
+(defconstant +space+ #\． "Symbol for white stone.")

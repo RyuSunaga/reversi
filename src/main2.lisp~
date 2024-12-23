@@ -1,0 +1,15 @@
+
+(load "constants.lisp")
+(load "player.lisp")
+(load "board.lisp")
+
+;; board
+(defparameter *board*
+  (make-instance 'board))
+
+;; Player & CPU sample
+(defparameter *player*
+  (make-instance 'human :player-type 'human :player-name "Ryu" :stone-type +black+))
+
+(defparameter *cpu*
+  (make-instance 'human :player-type 'cpu :player-name "MOCCA" :stone-type +white+))
