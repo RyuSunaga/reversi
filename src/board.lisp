@@ -124,3 +124,10 @@
   ;; NOTE: check-specific-directionを使いまわしたい
 )
 
+;;;; ---- TEST ----
+;; board
+(defparameter *board*
+  (make-instance 'board))
+
+
+
