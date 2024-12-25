@@ -1,15 +1,17 @@
 (defpackage :board
   (:use :cl :constants)
-  (:export :board))
+  (:export
+   :board))
 
 (in-package :board)
 
 ;;;; ---- Constant ----
 
+;; mini-reversiとして6x6にする
 (defconstant +row-min-inclusive+ 0)
-(defconstant +row-max-inclusive+ 7) 
+(defconstant +row-max-inclusive+ 5) 
 (defconstant +column-min-inclusive+ 0)
-(defconstant +column-max-inclusive+ 7)
+(defconstant +column-max-inclusive+ 5)
 
 (defvar *zenkaku-numbers* '("０" "１" "２" "３" "４" "５" "６" "７" "８"))
 
@@ -17,10 +19,10 @@
 (defun initialize-grid ()
   ;; initialize grid status.
   (let ((grid (make-array '(8 8) :initial-element +space+)))
-    (setf (aref grid 3 3) +black+)
-    (setf (aref grid 4 4) +black+)    
-    (setf (aref grid 3 4) +white+)
-    (setf (aref grid 4 3) +white+)
+    (setf (aref grid 2 2) +black+)
+    (setf (aref grid 3 3) +black+)    
+    (setf (aref grid 2 3) +white+)
+    (setf (aref grid 3 3) +white+)
     grid))
 
 
@@ -57,12 +59,12 @@
 
 (defmethod display-grid ((board board))
   (format t "~a" " ")
-  (dotimes (i 8) (format t "~a" (elt *zenkaku-numbers* i)))
+  (dotimes (i (1+ +row-max-inclusive+)) (format t "~a" (elt *zenkaku-numbers* i)))
   (format t "~%")
 	  
-  (dotimes (i 8)
+  (dotimes (i (1+ +row-max-inclusive+))
     (format t "~a" (elt *zenkaku-numbers* i))
-    (dotimes (j 8)
+    (dotimes (j (1+ +column-max-inclusive+))
       (format t "~a" (aref (grid board) i j)))
     (format t "~%")))
 

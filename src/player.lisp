@@ -1,6 +1,9 @@
 (defpackage :player
   (:use :cl :constants)
-  (:export :human :cpu))
+  (:export
+   :human
+   :cpu
+   :stone-type))
 
 (in-package :player)
 
