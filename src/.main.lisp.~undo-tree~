@@ -4965,7 +4965,7 @@ nil
 ([nil nil ((1 . 2) (t 26473 25217 142482 592000)) nil (26473 27231 892059 0) 0 nil] [nil nil ((1687 . 1689)) ((#("ch" 0 1 (fontified t) 1 2 (fontified t)) . 1687) (undo-tree-id198 . -2) (undo-tree-id199 . -2) (undo-tree-id200 . -2) (undo-tree-id201 . -2) (undo-tree-id202 . -2) (undo-tree-id203 . -2)) (26473 25212 684446 0) 0 nil])
 ([nil nil ((#("l" 0 1 (fontified t)) . -1) (undo-tree-id0 . -1) 2) nil (26473 27231 892055 0) 0 nil])
 ([nil nil ((#("c" 0 1 (fontified t)) . -1687) (undo-tree-id123 . -1) (undo-tree-id125 . -1) (undo-tree-id127 . -1) (undo-tree-id129 . -1) (undo-tree-id131 . -1) (undo-tree-id133 . -1) (#("h" 0 1 (fontified t)) . -1688) (undo-tree-id135 . -1) (undo-tree-id137 . -1) 1689) ((1687 . 1689)) (26473 25210 217573 0) 0 nil])
-([nil current ((#("p" 0 1 (fontified t)) . 4805)) nil (26473 27231 892020 0) 0 nil])
+([nil current ((#("p" 0 1 (fontified t)) . 4805)) nil (26475 33359 132606 0) 0 nil])
 ([nil nil ((#("    (format t \"~%\")))
 " 0 1 (fontified nil) 1 14 (fontified nil) 14 18 (face font-lock-string-face fontified nil) 18 22 (fontified nil)) . 1709) (undo-tree-id173 . -22) (undo-tree-id174 . -22) (undo-tree-id175 . -22) (undo-tree-id176 . -21) (undo-tree-id177 . -21) (undo-tree-id178 . -21) (undo-tree-id179 . -21) (1662 . 1709) (#("      (format t \"~a\" (aref (grid board) i j)))
 " 0 16 (fontified t) 16 20 (face font-lock-string-face fontified t) 20 46 (fontified t) 46 47 (fontified t)) . 1640) (1687 . 1709) 1708) ((#("    (format t \"~%\")))
@@ -4981,12 +4981,14 @@ nil
 " 0 16 (fontified t) 16 20 (face font-lock-string-face fontified t) 20 46 (fontified t) 46 47 (fontified t)) . 1662) (undo-tree-id163 . -47) (1709 . 1731)) (26473 25203 275230 0) 0 nil] [nil nil ((#(" " 0 1 (fontified nil)) . 1688) (1687 . 1688) (#("
 " 0 1 (fontified t)) . 1686) (1687 . 1688)) ((#(" " 0 1 (fontified nil)) . 1687) (undo-tree-id140 . -1) (undo-tree-id141 . -1) (undo-tree-id142 . -1) (undo-tree-id143 . -1) (undo-tree-id144 . -1) (undo-tree-id145 . -1) (undo-tree-id146 . -1) (undo-tree-id147 . -1) (undo-tree-id148 . -1) (undo-tree-id149 . -1) (undo-tree-id150 . -1) (undo-tree-id151 . -1) (undo-tree-id152 . -1) (undo-tree-id153 . -1) (1686 . 1687) (#("
 " 0 1 (fontified t)) . 1687) (undo-tree-id154 . -1) (undo-tree-id155 . -1) (1688 . 1689)) (26473 25199 608749 0) 0 nil])
-nil
+([nil nil ((1783 . 1784) (t 26473 27232 42365 805000)) ((#("
+" 0 1 (fontified t)) . 1783) (undo-tree-id0 . -1)) (26475 33359 132132 0) 0 nil])
 ([nil nil ((#("
 " 0 1 (fontified nil)) . 1710) (1663 . 1710) (#("      (format t \"~a\" (aref (grid board) i j)))
 " 0 16 (fontified t) 16 20 (face font-lock-string-face fontified t) 20 46 (fontified t) 46 47 (fontified t)) . 1662) (1709 . 1710)) ((#("
 " 0 1 (fontified nil)) . 1709) (undo-tree-id180 . -1) (undo-tree-id181 . -1) (undo-tree-id182 . -1) (undo-tree-id183 . -1) (undo-tree-id184 . -1) (undo-tree-id185 . -1) (undo-tree-id186 . -1) (undo-tree-id187 . -1) (undo-tree-id188 . -1) (1662 . 1709) (#("      (format t \"~a\" (aref (grid board) i j)))
 " 0 16 (fontified t) 16 20 (face font-lock-string-face fontified t) 20 46 (fontified t) 46 47 (fontified t)) . 1663) (undo-tree-id189 . -47) (undo-tree-id190 . -47) (undo-tree-id191 . -47) (1710 . 1711)) (26473 25209 808781 0) 0 nil])
+nil
 nil
 nil
 nil

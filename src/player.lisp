@@ -3,7 +3,8 @@
   (:export
    :human
    :cpu
-   :stone-type))
+   :stone-type
+   :decide-put-point))
 
 (in-package :player)
 
