@@ -25,7 +25,7 @@
   (let ((turn-player *player*)
 	(turn-cnt 0)
 	(pass-cnt 0)
-	(put-point-plist '(:row 2 :column 2 :stone-type #\○)))
+	(put-point-plist '(:row 2 :column 2 :stone-type constants:+black+)))
     
     ;; loop
     (loop while (and (< pass-cnt 2) (< turn-cnt 5)) ;; 置けない現象が2回ずついたら終わり
