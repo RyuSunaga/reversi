@@ -59,7 +59,7 @@
 (defgeneric flip-stone (r c stone board)
   (:documentation "flip grid stone."))
 
-(defgeneric %check-specific-direction (sr sc dr dc stone-type board)
+(defgeneric %check-specific-direction-can-put-stone (sr sc dr dc stone-type board)
   (:documentation "Check stone can put specific direction"))
 
 (defgeneric %check-all-direction (sr sc stone-type board)
@@ -78,12 +78,12 @@
 
 (defmethod display-grid ((board board))
   (format t "~a" " ")
-  (dotimes (i (1+ +row-max-inclusive+)) (format t "~a" (elt *zenkaku-numbers* i)))
+  (dotimes (i (1+ +row-max-inclusive+)) (format t "~a" (elt *hankaku-numbers* i)))
   (format t "~%")
 	  
   (dotimes (i (1+ +row-max-inclusive+))
-    ;; (format t "~a" (elt *zenkaku-numbers* i))
-    (format t "~a" (elt *zenkaku-numbers* i))    
+    ;; (format t "~a" (elt *hankaku-numbers* i))
+    (format t "~a" (elt *hankaku-numbers* i))    
     (dotimes (j (1+ +column-max-inclusive+))
       (format t "~a" (aref (grid board) i j)))
     (format t "~%")))
@@ -114,11 +114,9 @@
       while
       (position-in-grid-p (+ sr dr) (+ sc dc))
       do
-	 ;;(setf sr (+ sr dr)) ;; update row
-	 ;;(setf sc (+ sc dc)) ;; update column
 	 (incf sr dr)
 	 (incf sc dc)
-	 (setf stone (aref (grid board) sr sc))	
+	 (setf stone (get-stone sr sc board))
 
 	 (if (char= stone put-stone-type) ;; 同じ石か
 	     (if comb			  ;;1度でも連なったか
@@ -134,7 +132,8 @@
   ;; sr: row, sc: column, form: form when the check is true
   `(loop for dr from -1 to 1
 	 do (loop for dc from -1 to 1
-		  do (when (%check-specific-direction ,sr ,sc dr dc ,stone-type ,board)
+		  do
+		     (when (%check-specific-direction-can-put-stone ,sr ,sc dr dc ,stone-type ,board)
 		       ,@forms))))
 
 ;;(check-each-direction 0 0 #\○ *board* (return-from %check-all-direction-can-put-stone t))
@@ -146,7 +145,7 @@
 
 (defmethod can-put-stone (r c put-stone-type (board board))
   ;; 1. 対象の箇所が空いていなければその時点でnil
-  (when (char/= (aref (grid board) r c) +space+)
+  (when (char/= (get-stone r c board) +space+)
     (format t "THIS PLACE IS ALREADY EXISTS.~%")
     (return-from can-put-stone nil))
 
@@ -154,7 +153,6 @@
   (when (eql (%check-all-direction-can-put-stone r c put-stone-type board) nil)
     (format t "THIS PLACE CAN'T REVERSE OTHER STONES.~%")
     (return-from can-put-stone nil))
-
   (return-from can-put-stone t))
 
 

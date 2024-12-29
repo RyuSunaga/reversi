@@ -32,7 +32,7 @@
 	  do (if (eql turn-player *player*)
 		 
 		 (progn
-		   (format t "Your turn.~% Put Your Stone(~a)~%" (player:stone-type *player*)) ;; message for putting stone
+		   (format t "Your turn.~% Put Your Stone(~a)~%" (player:stone-type turn-player)) ;; message for putting stone
 		   (loop while (eql (board:can-put-stone (getf put-point-plist :row)
 							 (getf put-point-plist :column)
 							 (getf put-point-plist :stone-type)
@@ -44,16 +44,24 @@
 				    (getf put-point-plist :column)
 				    (getf put-point-plist :stone-type)
 				    *board*)
-		   ()				;; board update
 		   (board:display-grid *board*) ;; show board
 		   (setq turn-player *cpu*)
 		   (setq turn-cnt (1+ turn-cnt))) ;; change-turn player
 		 
 		 (progn
-		   (format t "CPU turn.~%") ;; message for putting stone
-		   () ;; check the postion can put stone
-		   (board:put-stone 5 5 (player:stone-type turn-player) *board*)		   
-		   ()				;; board update
+		   (format t "CPU turn.~% Put CPU Stone(~a)~%" (player:stone-type turn-player)) ;; message for putting stone
+		   (loop while (eql (board:can-put-stone (getf put-point-plist :row)
+							 (getf put-point-plist :column)
+							 (getf put-point-plist :stone-type)
+							 *board*)
+				    nil)
+			 do (setf put-point-plist (player:decide-put-point turn-player))) ;; decide put next stone
+		   
+		   (board:put-stone (getf put-point-plist :row)
+				    (getf put-point-plist :column)
+				    (getf put-point-plist :stone-type)
+				    *board*)
+
 		   (board:display-grid *board*) ;; show board		   
 		   (setq turn-player *player*)	;; chagen turn-player
 		   (setq turn-cnt (1+ turn-cnt))

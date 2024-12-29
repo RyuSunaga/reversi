@@ -43,6 +43,21 @@
     (format t "Row: ~a Column: ~a Stone: ~a~%" r c stone-type)
     `(:row ,r :column ,c :stone-type ,stone-type)))
 
+;; TODO: CPU用のPutに変更する
+(defmethod decide-put-point ((p cpu))
+  ;; If human put a stone. The point is read by repl.
+
+  (let ((r nil) (c nil) (stone-type (stone-type p)))
+    ;; READ INPUT    
+    (format t "Please input row number...~% row:")
+    (setf r (read))
+    (format t "Please input row number...~% column:")
+    (setf c (read))
+    (format t "Row: ~a Column: ~a Stone: ~a~%" r c stone-type)
+    `(:row ,r :column ,c :stone-type ,stone-type)))
+
+
+
 ;; Player & CPU sample
 (defparameter *player*
   (make-instance 'human :player-type 'human :player-name "Ryu" :stone-type +black+))
