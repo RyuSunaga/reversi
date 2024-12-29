@@ -48,12 +48,8 @@
   ;; If human put a stone. The point is read by repl.
 
   (let ((r nil) (c nil) (stone-type (stone-type p)))
-    ;; READ INPUT    
-    (format t "Please input row number...~% row:")
-    (setf r (read))
-    (format t "Please input row number...~% column:")
-    (setf c (read))
-    (format t "Row: ~a Column: ~a Stone: ~a~%" r c stone-type)
+    (setf r (random (1+ +row-max-inclusive+)))
+    (setf c (random (1+ +column-max-inclusive+)))    
     `(:row ,r :column ,c :stone-type ,stone-type)))
 
 

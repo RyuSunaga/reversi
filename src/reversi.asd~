@@ -1,0 +1,11 @@
+(defsystem "reversi"
+  :description "My Reversi"
+  :author "tetunoshin"
+  :license "MIT"
+  :version "0.1"
+  :depends-on ()
+  :components ((:file "constatnts")
+	       (:file "board")
+	       (:file "player"))
+  :test-depends-on ()
+  :test-components ())

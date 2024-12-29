@@ -4,20 +4,21 @@
    :board
    :put-stone
    :display-grid
-   :can-put-stone))
+   :can-put-stone
+   :can-put-stone-somewhere))
 
 (in-package :board)
 
-;;;; ---- Constant ----
+;; ;;;; ---- Constant ----
 
-;; mini-reversiとして6x6にする
-(defconstant +row-min-inclusive+ 0)
-(defconstant +row-max-inclusive+ 5) 
-(defconstant +column-min-inclusive+ 0)
-(defconstant +column-max-inclusive+ 5)
+;; ;; mini-reversiとして6x6にする
+;; (defconstant +row-min-inclusive+ 0)
+;; (defconstant +row-max-inclusive+ 5) 
+;; (defconstant +column-min-inclusive+ 0)
+;; (defconstant +column-max-inclusive+ 5)
 
-(defvar *zenkaku-numbers* '("０" "１" "２" "３" "４" "５" "６" "７" "８"))
-(defvar *hankaku-numbers* '(0 1 2 3 4 5))
+;; (defvar *zenkaku-numbers* '("０" "１" "２" "３" "４" "５" "６" "７" "８"))
+;; (defvar *hankaku-numbers* '(0 1 2 3 4 5))
 
 ;;; utilitis
 (defun initialize-grid ()
@@ -65,8 +66,12 @@
 (defgeneric %check-all-direction (sr sc stone-type board)
   (:documentation "Check stone can put all direction"))
 
-(defgeneric can-put-stone (r c stone board)
+
+(defgeneric can-put-stone (r c stone board &optional soutput-param)
   (:documentation "Check the point can put sotne."))
+
+(defgeneric can-put-stone-somewhere (stone-type board)
+  (:documentation "Check stone can put somewhere."))
 
 (defgeneric reverse-stones (sr sc stone-type board)
   (:documentation "Reverse stones."))
@@ -143,17 +148,25 @@
 			((return-from %check-all-direction-can-put-stone t)))
   nil)
 
-(defmethod can-put-stone (r c put-stone-type (board board))
+(defmethod can-put-stone (r c put-stone-type (board board) &optional (format-param t))
   ;; 1. 対象の箇所が空いていなければその時点でnil
   (when (char/= (get-stone r c board) +space+)
-    (format t "THIS PLACE IS ALREADY EXISTS.~%")
+    (format format-param "THIS PLACE IS ALREADY EXISTS.~%")
     (return-from can-put-stone nil))
 
   ;; 2. 相手の石を挟むことができる
   (when (eql (%check-all-direction-can-put-stone r c put-stone-type board) nil)
-    (format t "THIS PLACE CAN'T REVERSE OTHER STONES.~%")
+    (format format-param "THIS PLACE CAN'T REVERSE OTHER STONES.~%")
     (return-from can-put-stone nil))
   (return-from can-put-stone t))
+
+(defmethod can-put-stone-somewhere (stone-type (board board))
+  ;; 全箇所をチェックして１つでもおければOK
+  (loop for r from 0 to +row-max-inclusive+
+	do (loop for c from 0 to +column-max-inclusive+
+		 do (when (can-put-stone r c stone-type board nil)
+		      (return-from can-put-stone-somewhere t))))
+  nil)
 
 
 (defmethod %reverse-stones-specific-direction (sr sc dr dc stone-type (board board))
@@ -161,8 +174,8 @@
   ;;  TODO: 特定方向へ進める処理をマクロまたは関数にできないか
   (let ((nr (+ sr dr)) (nc (+ sc dc)))
     (loop while (and
-		 (position-in-grid-p nr nc);; 次置く石がおける位置にある
-		 (char= (get-stone nr nc board) (get-other-stone stone-type));; 次置く石が相手の石の色である
+		 (position-in-grid-p nr nc) ;; 次置く石がおける位置にある
+		 (char= (get-stone nr nc board) (get-other-stone stone-type)) ;; 次置く石が相手の石の色である
 		 )
 	  do
 	     (flip-stone nr nc stone-type board)
